@@ -12,6 +12,8 @@ class GuitarraFenderStratocaster{
         }
     }
 
+    method familia() = "cuerdas"
+
     method valioso() = true
 
     method afinado() = true
@@ -26,6 +28,8 @@ class TrompetaJupiter{
     method afinado() = temperaturaAmbiente >= 20 && temperaturaAmbiente <= 25
 
     method sordinaPuesta() = sordinaPuesta
+
+    method familia() = "viento"
 
     method afinar(aTemperatura) {
         if (not self.afinado()){
@@ -47,6 +51,8 @@ class PianoBechstein{
     var ubicacion = new Habitacion(ancho = 5, largo = 5)
 
     method afinado() = ubicacion.area() > 20
+
+    method familia() = "cuerdas"
 
     method precio() = 2 * ubicacion.ancho()
 
@@ -78,6 +84,8 @@ class Habitacion{
 class ViolinStagg {
     var tremolosRealizados = 0
     const pinturaLaqueado
+
+    method familia() = "cuerdas"
 
     method pintura() = pinturaLaqueado
 
@@ -197,8 +205,23 @@ class Orquesta{
 
 class Instrumento{
     const familiaInstrumento
-
+    const historialAfinaciones = []
     method precio() = familiaInstrumento.size() * multiplicadorVendedor.multiplicador()
+
+    method afinado() {
+        const ultimaFecha = historialAfinaciones.last().fecha()
+        const fechaDeHoy = new Date()
+
+        return ultimaFecha.month() < fechaDeHoy.month() && ultimaFecha.day() <= fechaDeHoy.day() && ultimaFecha.year() <= fechaDeHoy.year()
+    }
+}
+
+class Afinacion{
+    const fecha = new Date() 
+    const tecnico
+
+    method fecha() = fecha
+    method tecnico() = tecnico 
 }
 
 object multiplicadorVendedor{
