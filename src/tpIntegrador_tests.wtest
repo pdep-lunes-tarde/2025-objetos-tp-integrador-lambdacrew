@@ -1,5 +1,377 @@
 import tpIntegrador.*
 
-test "Test de prueba" {
-	assert.equals(4, 2 + 2)
+/*PUNTO 1 - LOS INSTRUMENTOS*/
+/*GUITARRA FENDER STRATOCASTER*/
+test "1) Una Fender esta afinada siempre" {
+	const unaFender = new GuitarraFenderStratocaster(color = "negro")
+
+	assert.equals(true, unaFender.afinado())
+}
+
+test "2) El costo de una Fender negra es de 15 chelines" {
+	const unaFender = new GuitarraFenderStratocaster(color = "negro")
+
+	assert.equals(15, unaFender.precio())
+}
+
+test "3) El costo de una Fender roja es de 10 chelines" {
+	const unaFender = new GuitarraFenderStratocaster(color = "rojo")
+
+	assert.equals(10, unaFender.precio())
+}
+
+test "4) Las Fenders siempre son valiosas" {
+	const unaFender = new GuitarraFenderStratocaster(color = "negro")
+
+	assert.equals(true, unaFender.valioso())
+}
+
+/*TROMPETA JUPITER*/
+
+test "5) Una trompeta Jupiter a una temperatura ambiente de 20 grados esta afinada"{
+	const unaTrompetaJupiter = new TrompetaJupiter(temperaturaAmbiente = 20, sordinaPuesta = true)
+
+	assert.equals(true, unaTrompetaJupiter.afinado())
+}
+test "6) Una trompeta Jupiter a una temperatura ambiente de 25 grados esta afinada"{
+	const unaTrompetaJupiter = new TrompetaJupiter(temperaturaAmbiente = 25, sordinaPuesta = true)
+
+	assert.equals(true, unaTrompetaJupiter.afinado())
+}
+test "7) Una trompeta Jupiter a una temperatura ambiente de 19 grados no esta afinada"{
+	const unaTrompetaJupiter = new TrompetaJupiter(temperaturaAmbiente = 19, sordinaPuesta = true)
+
+	assert.equals(false, unaTrompetaJupiter.afinado())
+}
+test "8) Una trompeta Jupiter a una temperatura ambiente de 26 grados no esta afinada"{
+	const unaTrompetaJupiter = new TrompetaJupiter(temperaturaAmbiente = 26, sordinaPuesta = true)
+
+	assert.equals(false, unaTrompetaJupiter.afinado())
+}
+test "9) Una trompeta Jupiter a una temperatura ambiente de 19 grados, si la afinamos, pasa a estar afinada"{
+	const unaTrompetaJupiter = new TrompetaJupiter(temperaturaAmbiente = 19, sordinaPuesta = true)
+
+	unaTrompetaJupiter.afinar()
+
+	assert.equals(true, unaTrompetaJupiter.afinado())
+}
+test "10) La trompeta cuesta sin sordina 30 chelines"{
+	const unaTrompetaJupiter = new TrompetaJupiter(temperaturaAmbiente = 20, sordinaPuesta = false)
+
+	assert.equals(30, unaTrompetaJupiter.precio())
+}
+test "11) La trompeta cuesta con sordina 35 chelines"{
+	const unaTrompetaJupiter = new TrompetaJupiter(temperaturaAmbiente = 20, sordinaPuesta = true)
+
+	assert.equals(35, unaTrompetaJupiter.precio())
+}
+test "12) La trompeta no es valiosa"{
+	const unaTrompetaJupiter = new TrompetaJupiter(temperaturaAmbiente = 20, sordinaPuesta = true)
+
+	assert.equals(false, unaTrompetaJupiter.valioso())
+}
+
+/*PIANO BECHSTEIN*/
+
+test "13) Un piano Bechstein en una habitacion de 5x5 esta afinado"{
+	
+
+	assert.equals(true, pianoBechstein.afinado())
+}
+test "14) El piano en una habitacion chica (de 20 metros cuadrados) no esta afinado"{
+	const habitacionChica = new Habitacion(ancho = 4, largo = 5)
+	
+	pianoBechstein.cambiarUbicacion(habitacionChica)
+
+	assert.equals(false, pianoBechstein.afinado())
+}
+test "15) El costo del piano Bechstein en la habitacion de 5x5 es de 10 chelines"{
+
+	assert.equals(10, pianoBechstein.precio())
+}
+test "16) El piano es valioso en la habitacion incial de 5x5"{
+
+	assert.equals(true, pianoBechstein.valioso())
+}
+test "17) El piano movido a una habitacion chica (de 20 metros cuadrados) no es valioso"{
+	const habitacionChica = new Habitacion(ancho = 4, largo = 5)
+	
+	pianoBechstein.cambiarUbicacion(habitacionChica)
+
+	assert.equals(false, pianoBechstein.valioso())
+}
+
+/*VIOLIN STAGG*/
+
+test "18) El violin Stagg comienza afinado (0 tremolos)"{
+	const unViolinStagg = new ViolinStagg(pinturaLaqueado = "laraAcrilica")
+
+	assert.equals(true, unViolinStagg.afinado())
+
+}
+test "19) El violin Stagg con 9 tremolos todavia esta afinado"{
+	const unViolinStagg = new ViolinStagg(pinturaLaqueado = "laraAcrilica", tremolosRealizados = 9)
+
+	assert.equals(true, unViolinStagg.afinado())
+}
+test "20) El violin luego de 10 tremolos exactos, queda desafinado"{
+	const unViolinStagg = new ViolinStagg(pinturaLaqueado = "laraAcrilica", tremolosRealizados = 10)
+
+	assert.equals(false, unViolinStagg.afinado())
+}
+test "21) El violin tiene un costo inicial de 20 chelines (sin tremolos)"{
+	const unViolinStagg = new ViolinStagg(pinturaLaqueado = "laraAcrilica", tremolosRealizados = 0)
+
+	assert.equals(20, unViolinStagg.precio())
+}
+test "22) Con exactamente 2 tremolos, el violin tiene un costo de 18 chelines"{
+	const unViolinStagg = new ViolinStagg(pinturaLaqueado = "laraAcrilica", tremolosRealizados = 2)
+
+	assert.equals(18, unViolinStagg.precio())
+}
+test "23) Con 10 trémolos, el violín tiene un costo de 15 chelines (nunca baja de 15)"{
+	const unViolinStagg = new ViolinStagg(pinturaLaqueado = "laraAcrilica", tremolosRealizados = 10)
+
+	assert.equals(15, unViolinStagg.precio())
+}
+test "24) Pintado con “laca acrílica”, el violín es valioso"{
+	const unViolinStagg = new ViolinStagg(pinturaLaqueado = "lacaAcrilica", tremolosRealizados = 9)
+
+	assert.equals(true, unViolinStagg.valioso())
+}
+test "25) Pintado con “látex satinado”, el violín no es valioso"{
+	const unViolinStagg = new ViolinStagg(pinturaLaqueado = "latexSatinado", tremolosRealizados = 9)
+
+	assert.equals(false, unViolinStagg.valioso())
+}
+
+/*PUNTO 2 - MUSICOS*/
+
+test "26) Johann es feliz con una trompeta Jupiter (que es cara)"{
+	assert.equals(true, johann.esFeliz())
+}
+
+test "27) Johann no es feliz con un violín Stagg (sin trémolos, que no es cara)"{
+	const violinStagg = new ViolinStagg(pinturaLaqueado = "lacaAcrilica")
+	johann.cambiarInstrumento(violinStagg)
+	assert.equals(false, johann.esFeliz())
+}
+
+test "28) Wolfgang es feliz si Johann tiene una trompeta Jupiter"{
+	assert.equals(true, wolfang.esFeliz())
+}
+
+test "29) Wolfgang no es feliz si Johann tiene un violín Stagg (sin trémolos)"{
+	const violinStagg = new ViolinStagg(pinturaLaqueado = "lacaAcrilica")
+	johann.cambiarInstrumento(violinStagg)
+
+	assert.equals(false, wolfang.esFeliz())
+}
+
+test "30) Giuseppe es feliz con una guitarra Fender (que está siempre afinada)"{
+	assert.equals(true, giuseppe.esFeliz())
+}
+
+test "31) Giuseppe no es feliz con un piano Bechstein en una habitación de un metro cuadrado"{
+	const nuevaHabitacion = new Habitacion(ancho = 1, largo = 1)
+
+	pianoBechstein.cambiarUbicacion(nuevaHabitacion)
+	giuseppe.cambiarInstrumento(pianoBechstein)
+
+	assert.equals(false, giuseppe.esFeliz())
+}
+
+test "32) Maddalena con el violín Stagg sin trémolos es feliz (costo 20, es par)"{
+	assert.equals(true, maddalena.esFeliz())
+}
+
+test "33) Maddalena con el violín Stagg con un trémolo no es feliz (costo 19, es impar)"{
+	const violin = new ViolinStagg(pinturaLaqueado = "laraAcrilica", tremolosRealizados = 1)
+
+	maddalena.cambiarInstrumento(violin)
+
+	assert.equals(false, maddalena.esFeliz())
+}
+
+test "34) Si tenemos una asociación donde están Johann con un violín Stagg, Wolfgang, Giuseppe con 
+su guitarra Fender original y Maddalena con su violín Stagg original, los músicos 
+felices deben ser Giuseppe y Maddalena"{
+	const guitarra = new GuitarraFenderStratocaster(color = "negro")
+	const violin = new ViolinStagg(pinturaLaqueado = "laraAcrilica")
+	const grupo = new AsociacionMusical()
+
+	johann.cambiarInstrumento(violin)
+	grupo.agregarIntegrante(johann)
+	grupo.agregarIntegrante(wolfang)
+	grupo.agregarIntegrante(giuseppe)
+	grupo.agregarIntegrante(maddalena)
+
+	assert.equals([giuseppe,maddalena], grupo.sonFelices())
+}
+
+/* MUSICOS Y ORQUESTA */
+test "35) Un músico que es experto porque su preferencia coincide con la del instrumento que tiene."{
+	const guitarra = new GuitarraFenderStratocaster(color = "negra")
+	const nuevoMusico = new Musico(preferenciaPor = "cuerdas", instrumentoQueToca = guitarra )
+
+	assert.equals(true, nuevoMusico.experto())
+
+}
+
+test "36) Un músico cuya preferencia de familia no coincida con la del instrumento no es experto."{
+	const guitarra = new GuitarraFenderStratocaster(color = "negra")
+	const nuevoMusico = new Musico(preferenciaPor = "viento", instrumentoQueToca = guitarra )
+
+	assert.equals(false, nuevoMusico.experto())
+}
+
+test "37) Un músico feliz porque la trompeta Júpiter tiene sordina y es copada."{
+	
+	const trompeta = new TrompetaJupiter(sordinaPuesta = true)
+	const nuevoMusico = new Musico(preferenciaPor = "persecuccion", instrumentoQueToca = trompeta)
+
+	assert.equals(true, nuevoMusico.esFeliz())
+}
+
+test "38) Un músico que no es feliz porque la trompeta Júpiter no tiene sordina y no es copada."{
+	
+	const trompeta = new TrompetaJupiter(sordinaPuesta = false)
+	const nuevoMusico = new Musico(preferenciaPor = "persecuccion", instrumentoQueToca = trompeta)
+
+	assert.equals(false, nuevoMusico.esFeliz())
+}
+
+test "39) Un músico común no es feliz con un violín Stagg"{
+	
+	const violin = new ViolinStagg(pinturaLaqueado = "laraAcrilica")
+	const nuevoMusico = new Musico(preferenciaPor = "persecuccion", instrumentoQueToca = violin)
+
+	assert.equals(false, nuevoMusico.esFeliz())
+}
+
+test "40) Un músico común no es feliz con una guitarra Fender."{
+	
+	const guitarra = new GuitarraFenderStratocaster(color = "verde")
+	const nuevoMusico = new Musico(preferenciaPor = "persecuccion", instrumentoQueToca = guitarra)
+
+	assert.equals(false, nuevoMusico.esFeliz())
+}
+
+test "41) Un músico común que es feliz con un piano Bechstein (el largo o el ancho de la habitación deben ser > 6)."{
+	const nuevaHabitacion = new Habitacion(ancho = 7, largo = 5)
+	const nuevoMusico = new Musico(preferenciaPor = "viento", instrumentoQueToca = pianoBechstein)
+
+	pianoBechstein.cambiarUbicacion(nuevaHabitacion)
+
+	assert.equals(true, nuevoMusico.esFeliz())
+}
+
+test "42) y un músico común que no es feliz si la habitación no es lo suficientemente ancha ni larga."{
+	const nuevaHabitacion = new Habitacion(ancho = 3, largo = 5)
+	const nuevoMusico = new Musico(preferenciaPor = "viento", instrumentoQueToca = pianoBechstein)
+
+	pianoBechstein.cambiarUbicacion(nuevaHabitacion)
+
+	assert.equals(false, nuevoMusico.esFeliz())
+}
+
+test "43) un músico con preferencia por la “percusión” que no es feliz con un instrumento de “cuerdas”."{
+	const guitarra = new GuitarraFenderStratocaster(color = "verde")
+	const nuevoMusico = new Musico(preferenciaPor = "persecuccion", instrumentoQueToca = guitarra)
+
+	assert.equals(false, nuevoMusico.esFeliz())
+}
+
+test "44) No se puede agregar dos veces el mismo músico"{
+	const orquesta = new Orquesta(cantidadMaxima = 5, integrantes = [johann, maddalena])
+	
+	orquesta.agregarIntegrante(johann)
+
+	assert.equals([johann, maddalena], orquesta.integrantes())
+}
+
+test "45) No se puede agregar más músicos del permitido"{
+	const orquesta = new Orquesta(cantidadMaxima = 2, integrantes = [johann, maddalena])
+	
+	orquesta.agregarIntegrante(wolfang)
+
+	assert.equals([johann, maddalena], orquesta.integrantes())
+}
+test "46) El caso positivo de poder agregar más músicos, aunque puede estar contemplado en los casos anteriores"{
+	const orquesta = new Orquesta(cantidadMaxima = 4, integrantes = [johann, maddalena])
+	
+	orquesta.agregarIntegrante(wolfang)
+
+	assert.equals([johann, maddalena, wolfang], orquesta.integrantes())
+}
+test "47) El caso en el que una orquesta está bien conformada porque todos sus integrantes son felices."{
+	const orquesta = new Orquesta(cantidadMaxima = 4, integrantes = [johann, maddalena])
+
+	assert.equals(true, orquesta.estaBienConformado())
+}
+test "48) El caso en el que una orquesta no está bien conformada porque alguno de sus integrantes no es feliz."{
+	const jose = new Musico(preferenciaPor = "viento", instrumentoQueToca = pianoBechstein)
+	const orquesta = new Orquesta(cantidadMaxima = 5, integrantes = [johann, maddalena, jose])
+
+	assert.equals(false, orquesta.estaBienConformado())
+}
+
+test "49) El instrumento generico no es copado"{
+	const bateria = new InstrumentoGenerico(familiaInstrumento = "persecuccion")
+
+	assert.equals(false, bateria.esCopado())
+}
+
+test "50) El costo de un instrumento de “cuerdas” cuando el número al azar es par, debe dar 14."{
+	const guitarra = new InstrumentoGenerico(familiaInstrumento = "cuerdas", valor = 2)
+
+
+	assert.equals(14, guitarra.precio())
+}
+
+
+test "51) El costo de un instrumento de “cuerdas” cuando el número al azar es impar, debe dar 21."{
+	const guitarra = new InstrumentoGenerico(familiaInstrumento = "cuerdas", valor = 3)
+	
+	assert.equals(21, guitarra.precio())
+}
+
+test "52) No se puede hacer el proceso de revisión de un instrumento si el técnico no es especialista en esa familia"{
+	const jose = new Tecnico(especialistaEn = "cuerdas")
+
+	assert.equals(false, johann.sePuedeMandarARevisarCon(jose))
+}
+
+test "53) No se puede afinar un instrumento si pasó menos de una semana"{
+	const jose = new Tecnico(especialistaEn = "cuerdas")
+
+	assert.equals(false, antonio.sePuedeMandarARevisarCon(jose))
+}
+
+test "54) Al revisar el instrumento se genera una nueva revisión con fecha de hoy y el técnico correspondiente"{
+	const pablo = new Tecnico(especialistaEn = "viento")
+	const fechaHoy = new Date()
+	johann.mandarAfinarInstrumentoCon(pablo)
+
+	assert.equals(fechaHoy, johann.instrumento().historialAfinaciones().last().fecha())
+	assert.equals(pablo, johann.instrumento().historialAfinaciones().last().tecnico())
+}
+
+test "55) Al ejecutar el proceso de revisión para el piano Bechstein si inicialmente está desafinado al terminar queda afinado"{
+	const jose = new Tecnico(especialistaEn = "cuerdas")
+
+	pianoBechstein.cambiarUbicacion(new Habitacion(ancho = 1, largo = 1))
+	antonio.mandarAfinarInstrumentoCon(jose)
+
+	assert.equals(true, johann.instrumento().afinado())
+}
+
+test "56) de revisión para la trompeta Jupiter si inicialmente está desafinada al terminar queda afinada"{
+	const pablo = new Tecnico(especialistaEn = "viento")
+	const trompetaDesafinada = new TrompetaJupiter(sordinaPuesta = true, temperaturaAmbiente = 15)
+
+	johann.cambiarInstrumento(trompetaDesafinada)
+	johann.mandarAfinarInstrumentoCon(pablo)
+
+	assert.equals(true, johann.instrumento().afinado())
 }
