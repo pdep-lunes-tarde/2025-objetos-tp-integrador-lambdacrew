@@ -1,7 +1,7 @@
-
 /* 1 - LOS INSTRUMENTOS */
 class GuitarraFenderStratocaster{
     const color
+    const historialAfinaciones = []
 
     method precio(){
         if(color == "negro"){
@@ -17,11 +17,19 @@ class GuitarraFenderStratocaster{
     method valioso() = true
 
     method afinado() = true
-}
 
+    method esCopado() = false
+
+    method historialAfinaciones() = historialAfinaciones
+
+    method afinar() = true
+}
 class TrompetaJupiter{
-    var temperaturaAmbiente
+    var temperaturaAmbiente = 21
     const sordinaPuesta
+    const historialAfinaciones = []
+
+    method historialAfinaciones() = historialAfinaciones
 
     method valioso() = false
 
@@ -31,10 +39,10 @@ class TrompetaJupiter{
 
     method familia() = "viento"
 
-    method afinar(aTemperatura) {
-        if (not self.afinado()){
-            temperaturaAmbiente = aTemperatura
-        }
+    method esCopado() = sordinaPuesta
+
+    method afinar() {
+        temperaturaAmbiente = 23
     }
 
     method precio(){
@@ -46,9 +54,12 @@ class TrompetaJupiter{
         }
     }
 }
-
-class PianoBechstein{
+object pianoBechstein{
     var ubicacion = new Habitacion(ancho = 5, largo = 5)
+
+    const historialAfinaciones = [(new Revision(fecha = new Date(day = 5, month = 10, year = 2025), tecnico = new Tecnico(especialistaEn = "cuerdas")))]
+
+    method historialAfinaciones() = historialAfinaciones
 
     method afinado() = ubicacion.area() > 20
 
@@ -58,12 +69,16 @@ class PianoBechstein{
 
     method valioso() = self.afinado()
 
+    method esCopado() = ubicacion.ancho() > 6 || ubicacion.largo() > 6
+
     method cambiarUbicacion(nuevaHabitacion){
         ubicacion = nuevaHabitacion
     }
+
+    method afinar(){
+        self.cambiarUbicacion(habitacionGrande)
+    }
 }
-
-
 class Habitacion{
     const ancho 
     const largo 
@@ -81,9 +96,14 @@ class Habitacion{
     }
 }
 
+const habitacionGrande = new Habitacion(ancho = 8, largo = 4)
+
 class ViolinStagg {
     var tremolosRealizados = 0
     const pinturaLaqueado
+    const historialAfinaciones = []
+
+    method historialAfinaciones() = historialAfinaciones
 
     method familia() = "cuerdas"
 
@@ -106,6 +126,12 @@ class ViolinStagg {
     method realizarTremolos(cantidad){
         tremolosRealizados = tremolosRealizados + cantidad
     }
+
+    method afinar(){
+        tremolosRealizados = 0
+    }
+
+    method esCopado() = false
 }
 
 /* 2 - LOS MUSICOS */
@@ -120,6 +146,33 @@ object johann{
     method cambiarInstrumento(nuevoInstrumento){
         instrumento = nuevoInstrumento
     }
+
+    method diferenciaEntreFechas(){
+        if(instrumento.historialAfinaciones().size() == 0){
+            return 0
+        }
+        else{
+            const fechaDeHoy = new Date()
+            return fechaDeHoy - instrumento.historialAfinaciones().last().fecha()
+        }
+    }
+    method sePuedeMandarARevisarCon(tecnicoAfinador) {
+        const fechaDeHoy = new Date()
+        const diferenciaFechas = self.diferenciaEntreFechas()
+
+        return tecnicoAfinador.puedeRevisarElInstrumento(instrumento) && (diferenciaFechas >= 7 || instrumento.historialAfinaciones().size() == 0 )
+    }
+
+    method mandarAfinarInstrumentoCon(tecnicoAfinador){
+
+        if (self.sePuedeMandarARevisarCon(tecnicoAfinador)){
+            instrumento.afinar()
+            instrumento.historialAfinaciones().add(new Revision(tecnico = tecnicoAfinador))
+        }   
+    }
+
+    method instrumento() = instrumento
+
 }
 
 object wolfang{
@@ -130,39 +183,117 @@ object wolfang{
 }
 
 object antonio{
-    var instrumentos = new PianoBechstein()
+    var instrumento = pianoBechstein
 
     method esFeliz(){
-        return instrumentos.valioso()
+        return instrumento.valioso()
     }
 
-    method cambiarInstrumento(instrumento){
-        instrumentos = instrumento
+    method cambiarInstrumento(nuevoInstrumento){
+        instrumento = nuevoInstrumento
     }
+
+    method diferenciaEntreFechas(){
+        if(instrumento.historialAfinaciones().size() == 0){
+            return 0
+        }
+        else{
+            const fechaDeHoy = new Date()
+            return fechaDeHoy - instrumento.historialAfinaciones().last().fecha()
+        }
+    }
+    method sePuedeMandarARevisarCon(tecnicoAfinador) {
+        const fechaDeHoy = new Date()
+        const diferenciaFechas = self.diferenciaEntreFechas()
+
+        return tecnicoAfinador.puedeRevisarElInstrumento(instrumento) && (diferenciaFechas >= 7 || instrumento.historialAfinaciones().size() == 0 )
+    }
+
+    method mandarAfinarInstrumentoCon(tecnicoAfinador){
+
+        if (self.sePuedeMandarARevisarCon(tecnicoAfinador)){
+            instrumento.afinar()
+            instrumento.historialAfinaciones().add(new Revision(tecnico = tecnicoAfinador))
+        }   
+    }
+
+    method instrumento() = instrumento
 }
 
 object giuseppe{
-    var instrumentos = new GuitarraFenderStratocaster(color = "negra")
+    var instrumento = new GuitarraFenderStratocaster(color = "negra")
 
     method esFeliz(){
-        return instrumentos.afinado()
+        return instrumento.afinado()
     }
 
-    method cambiarInstrumento(instrumento){
-        instrumentos = instrumento
+    method cambiarInstrumento(nuevoInstrumento){
+        instrumento = nuevoInstrumento
     }
+
+    method diferenciaEntreFechas(){
+        if(instrumento.historialAfinaciones().size() == 0){
+            return 0
+        }
+        else{
+            const fechaDeHoy = new Date()
+            return fechaDeHoy - instrumento.historialAfinaciones().last().fecha()
+        }
+    }
+    method sePuedeMandarARevisarCon(tecnicoAfinador) {
+        const fechaDeHoy = new Date()
+        const diferenciaFechas = self.diferenciaEntreFechas()
+
+        return tecnicoAfinador.puedeRevisarElInstrumento(instrumento) && (diferenciaFechas >= 7 || instrumento.historialAfinaciones().size() == 0 )
+    }
+
+    method mandarAfinarInstrumentoCon(tecnicoAfinador){
+
+        if (self.sePuedeMandarARevisarCon(tecnicoAfinador)){
+            instrumento.afinar()
+            instrumento.historialAfinaciones().add(new Revision(tecnico = tecnicoAfinador))
+        }   
+    }
+
+    method instrumento() = instrumento
 }
 
 object maddalena{
-    var instrumentos = new ViolinStagg(pinturaLaqueado = "lacaAcrilica")
+    var instrumento = new ViolinStagg(pinturaLaqueado = "lacaAcrilica")
 
     method esFeliz(){
-        return instrumentos.precio().even()
+        return instrumento.precio().even()
     }
 
-    method cambiarInstrumento(instrumento){
-        instrumentos = instrumento
+    method cambiarInstrumento(nuevoInstrumento){
+        instrumento = nuevoInstrumento
     }
+
+    method diferenciaEntreFechas(){
+        if(instrumento.historialAfinaciones().size() == 0){
+            return 0
+        }
+        else{
+            const fechaDeHoy = new Date()
+            return fechaDeHoy - instrumento.historialAfinaciones().last().fecha()
+        }
+    }
+    method sePuedeMandarARevisarCon(tecnicoAfinador) {
+        const fechaDeHoy = new Date()
+        const diferenciaFechas = self.diferenciaEntreFechas()
+
+        return tecnicoAfinador.puedeRevisarElInstrumento(instrumento) && (diferenciaFechas >= 7 || instrumento.historialAfinaciones().size() == 0 )
+    }
+
+    method mandarAfinarInstrumentoCon(tecnicoAfinador){
+
+        if (self.sePuedeMandarARevisarCon(tecnicoAfinador)){
+            instrumento.afinar()
+            instrumento.historialAfinaciones().add(new Revision(tecnico = tecnicoAfinador))
+        }   
+    }
+
+    method instrumento() = instrumento
 }
 
 class AsociacionMusical{
@@ -183,9 +314,36 @@ class Musico{
     const preferenciaPor
     const instrumentoQueToca
 
-    method experto() = instrumentoQueToca.categoria() == preferenciaPor
+    method experto() = instrumentoQueToca.familia() == preferenciaPor
 
-    method esFeliz() = not instrumentoQueToca.sordinaPuesta() || instrumentoQueToca.area() > 6
+    method esFeliz() = instrumentoQueToca.esCopado()
+
+    method instrumento() = instrumentoQueToca
+
+    method diferenciaEntreFechas(){
+        if(instrumentoQueToca.historialAfinaciones().size() == 0){
+            return 0
+        }
+        else{
+            const fechaDeHoy = new Date()
+            return fechaDeHoy - instrumentoQueToca.historialAfinaciones().last().fecha()
+        }
+    }
+    method sePuedeMandarARevisarCon(tecnicoAfinador) {
+        const fechaDeHoy = new Date()
+        const diferenciaFechas = self.diferenciaEntreFechas()
+
+        return tecnicoAfinador.puedeRevisarElInstrumento(instrumentoQueToca) && (diferenciaFechas >= 7 || instrumentoQueToca.historialAfinaciones().size() == 0 )
+    }
+
+    method mandarAfinarInstrumentoCon(tecnicoAfinador){
+
+        if (self.sePuedeMandarARevisarCon(tecnicoAfinador)){
+            instrumentoQueToca.afinar()
+            instrumentoQueToca.historialAfinaciones().add(new Revision(tecnico = tecnicoAfinador))
+        }   
+    }
+
 }
 
 class Orquesta{
@@ -193,35 +351,39 @@ class Orquesta{
     const cantidadMaxima
 
     method agregarIntegrante(nuevoIntegrante){
-        if(integrantes.size() >= cantidadMaxima && not integrantes.contains(nuevoIntegrante)){
+        if(integrantes.size() < cantidadMaxima && not integrantes.contains(nuevoIntegrante)){
             integrantes.add(nuevoIntegrante)
-        }  
+        } 
     }
 
     method estaBienConformado() = integrantes.all({n => n.esFeliz()})
+
+    method integrantes() = integrantes
 }
 
 /* PUNTO 4 - INSTRUMENTOS GENERICOS*/
 
-class Instrumento{
+class InstrumentoGenerico{
     const familiaInstrumento
     const historialAfinaciones = []
-    method precio() = familiaInstrumento.size() * multiplicadorVendedor.multiplicador()
+    const valor = multiplicadorVendedor.multiplicador()
+
+    method precio() = familiaInstrumento.size() * valor
 
     method afinado() {
-        const ultimaFecha = historialAfinaciones.last().fecha()
-        const fechaDeHoy = new Date()
+        const ultimoMesDeAfinacionHecha = historialAfinaciones.last().fecha().month()
+        const mesActual = new Date().month()
 
-        return ultimaFecha.month() < fechaDeHoy.month() && ultimaFecha.day() <= fechaDeHoy.day() && ultimaFecha.year() <= fechaDeHoy.year()
+        const diferenciaMes = mesActual - ultimoMesDeAfinacionHecha
+
+        return diferenciaMes >= 1
     }
-}
 
-class Afinacion{
-    const fecha = new Date() 
-    const tecnico
+    method afinar() = true
 
-    method fecha() = fecha
-    method tecnico() = tecnico 
+    method esCopado() = false 
+
+    method familiaInstrumento() = familiaInstrumento
 }
 
 object multiplicadorVendedor{
@@ -236,3 +398,22 @@ object multiplicadorVendedor{
         }
     }
 }
+
+class Revision{
+    const fecha = new Date() 
+    const tecnico
+
+    method fecha() = fecha
+    method tecnico() = tecnico 
+}
+
+class Tecnico{
+    const especialistaEn
+
+    method puedeRevisarElInstrumento(instrumento){
+        return especialistaEn == instrumento.familia()
+    }
+}
+
+
+
